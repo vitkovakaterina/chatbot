@@ -1,0 +1,20 @@
+<?php
+$translations = array_map('str_getcsv', file('translations.csv'));
+$inputText = $_POST['query'];
+$found = false;
+
+foreach ($translations as $translation) {
+  if ($inputText === $translation[0]) {
+    $found = true;
+    $response = $translation[1];
+    break;
+  }
+}
+
+if (!$found) {
+  $response = "I'm sorry, I don't know how to translate that.";
+}
+
+header('Content-Type: application/json');
+echo json_encode(array('fulfillmentText' => $response));
+?>
